@@ -15,6 +15,11 @@ from target_bigquery import stream_utils
 from target_bigquery.stream_ref_helper import StreamRefHelper
 from target_bigquery import sql_utils
 
+from google.api_core.future import polling
+from google.cloud import bigquery
+from google.cloud.bigquery import retry as bq_retry
+
+
 logger = singer.get_logger()
 
 PRECISION = 38
@@ -288,7 +293,9 @@ class DbSync:
             queries = [query]
 
         logger.info("TARGET_BIGQUERY - Running query: {}".format(query))
-        query_job = self.client.query(';\n'.join(queries), job_config=job_config)
+
+        query_job = self.client.query(';\n'.join(queries), job_config=job_config, retry=bq_retry.DEFAULT_RETRY)
+        query_job._retry = polling.DEFAULT_RETRY
         query_job.result()
 
         return query_job
@@ -460,6 +467,7 @@ class DbSync:
                 self.grant_privilege(schema, self.grantees, self.grant_usage_on_schema)
             except Conflict:
                 # Already exists.
+
                 pass
 
     # pylint: disable=no-self-use
