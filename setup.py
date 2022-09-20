@@ -6,7 +6,7 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(name="pipelinewise-target-bigquery",
-      version="1.3.1",
+      version="1.5.1",
       description="Singer.io target for loading data to BigQuery - PipelineWise compatible",
       long_description=long_description,
       long_description_content_type='text/markdown',
@@ -19,8 +19,8 @@ setup(name="pipelinewise-target-bigquery",
       py_modules=["target_bigquery"],
       install_requires=[
           'pipelinewise-singer-python>=1,<3',
-          'google-cloud-bigquery>=2.20.0,<2.35.0',
-          'fastavro>=0.22.8,<=1.4.9'
+          'google-cloud-bigquery>=2.20.0,<=3.3.2',
+          'fastavro>=0.22.8,<=1.6.1'
       ],
       extras_require={
           "test": [

@@ -8,9 +8,9 @@ logging.basicConfig()
 logging.getLogger().setLevel(logging.DEBUG)
 
 
-## 1. Retry at the Google API level (Deadline = 30 seconds)
+## 1. Retry at the Google API level (Deadline = 120 seconds)
 # NOTE: We can isolate the exception types at a later point - Just use `Exception` for now
-@Retry(predicate=if_exception_type(Exception), deadline=30)
+@Retry(predicate=if_exception_type(Exception), deadline=120)
 def query(client, query, params=[]) -> bigquery.job.query.QueryJob:
     def to_query_parameter(value):
         if isinstance(value, int):
