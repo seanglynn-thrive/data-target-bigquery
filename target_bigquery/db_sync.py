@@ -359,8 +359,8 @@ class DbSync:
             self.flatten_schema = flatten_schema(stream_schema_message['schema'], max_level=self.data_flattening_max_level)
             self.renamed_columns = {}
 
-    # 1. Retry at the Google API level (Retry deadline = 30 seconds)
-    @Retry(predicate=if_exception_type(Exception), deadline=30)
+    # 1. Retry at the Google API level (Retry deadline = 120 seconds)
+    @Retry(predicate=if_exception_type(Exception), deadline=120)
     def query(self, query, params=[]) -> bigquery.job.query.QueryJob:
         def to_query_parameter(value):
             if isinstance(value, int):
